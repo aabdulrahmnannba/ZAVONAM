@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ZAVONAM Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="login" id="login">
+  <div class="login-card">
+    <div class="mark">✿</div><p>ZAVONAM 2026</p><h1>Organizer Admin</h1>
+    <label>Admin Email<input id="user" type="email" autocomplete="username" placeholder="admin email" required></label>
+    <label>Password<input id="pass" type="password" autocomplete="current-password" placeholder="Enter password"></label>
+    <button id="loginBtn">Sign in</button>
+    <small>Use the Supabase Auth admin email and password created for this event.</small>
+    <a href="../index.html">← Public website</a>
+  </div>
+</div>
+
+<div class="app hidden" id="app">
+  <aside>
+    <div class="side-brand">✿ <b>ZAVONAM</b></div>
+    <button class="side active" data-view="overview">Overview</button>
+    <button class="side" data-view="registrations">Registrations</button>
+    <button class="side" data-view="payments">Payments</button>
+    <button class="side" data-view="participants">Participants</button>
+    <button class="side" data-view="events">Events</button><button class="side" data-view="announcements">Announcements</button>
+    <button class="side" data-view="gallery">Gallery</button>
+    <button class="side" data-view="settings">Settings</button>
+    <button id="logout">Log out</button>
+  </aside>
+  <main>
+    <header><div><p>ORGANIZER CONTROL</p><h2 id="viewTitle">Dashboard</h2></div><a href="../index.html">View website ↗</a></header>
+    <section id="view"></section>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-config.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
