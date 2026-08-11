@@ -460,11 +460,6 @@ document.addEventListener("DOMContentLoaded", () => {
               form.paymentReference || ""
             ).trim(),
 
-          payment_note:
-            String(
-              form.paymentNote || ""
-            ).trim(),
-
           amount: 600,
 
           payment_status:
