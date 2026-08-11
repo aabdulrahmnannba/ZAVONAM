@@ -455,11 +455,6 @@ document.addEventListener("DOMContentLoaded", () => {
               ? "UPI"
               : "Cash",
 
-          payment_reference:
-            String(
-              form.paymentReference || ""
-            ).trim(),
-
           amount: 600,
 
           payment_status:
