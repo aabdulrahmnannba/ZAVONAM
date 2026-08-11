@@ -48,13 +48,17 @@ document.addEventListener("DOMContentLoaded", () => {
   ========================================================= */
 
   $("#menuBtn")?.addEventListener("click", () => {
-    $("#nav").classList.toggle("open");
+
+    $("#nav")?.classList.toggle("open");
+
   });
 
   $$("#nav a").forEach(a => {
 
     a.addEventListener("click", () => {
-      $("#nav").classList.remove("open");
+
+      $("#nav")?.classList.remove("open");
+
     });
 
   });
@@ -76,29 +80,47 @@ document.addEventListener("DOMContentLoaded", () => {
       Math.floor(diff / 86400000);
 
     const h =
-      Math.floor(diff % 86400000 / 3600000);
+      Math.floor(
+        diff % 86400000 / 3600000
+      );
 
     const m =
-      Math.floor(diff % 3600000 / 60000);
+      Math.floor(
+        diff % 3600000 / 60000
+      );
 
     const s =
-      Math.floor(diff % 60000 / 1000);
+      Math.floor(
+        diff % 60000 / 1000
+      );
 
-    if ($("#days"))
+    if ($("#days")) {
+
       $("#days").textContent =
         String(d).padStart(2, "0");
 
-    if ($("#hours"))
+    }
+
+    if ($("#hours")) {
+
       $("#hours").textContent =
         String(h).padStart(2, "0");
 
-    if ($("#minutes"))
+    }
+
+    if ($("#minutes")) {
+
       $("#minutes").textContent =
         String(m).padStart(2, "0");
 
-    if ($("#seconds"))
+    }
+
+    if ($("#seconds")) {
+
       $("#seconds").textContent =
         String(s).padStart(2, "0");
+
+    }
 
   }
 
@@ -144,11 +166,14 @@ document.addEventListener("DOMContentLoaded", () => {
             String(e.category || "")
               .toLowerCase(),
 
-          icon: e.icon || "🌼",
+          icon:
+            e.icon || "🌼",
 
-          time: e.event_time || "",
+          time:
+            e.event_time || "",
 
-          venue: e.venue || "",
+          venue:
+            e.venue || "",
 
           desc:
             e.description ||
@@ -186,17 +211,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         id: i + 1,
 
-        title: e.title,
+        title:
+          e.title,
 
         category:
           String(e.category || "")
             .toLowerCase(),
 
-        icon: e.icon || "🌼",
+        icon:
+          e.icon || "🌼",
 
-        time: e.time || "",
+        time:
+          e.time || "",
 
-        venue: e.venue || "",
+        venue:
+          e.venue || "",
 
         desc:
           e.desc ||
@@ -213,7 +242,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  async function renderEvents(filter = "all") {
+  async function renderEvents(
+    filter = "all"
+  ) {
 
     if (!grid) return;
 
@@ -229,7 +260,9 @@ document.addEventListener("DOMContentLoaded", () => {
         )
         .map(e => `
 
-          <article class="event-card reveal">
+          <article
+            class="event-card reveal"
+          >
 
             <div class="event-icon">
               ${e.icon}
@@ -346,6 +379,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* =========================================================
      REGISTRATION
+     
+     IMPORTANT:
+     SECOND YEAR RESTRICTION REMOVED.
+     
+     Anyone who fills the form correctly can submit.
   ========================================================= */
 
   $("#registrationForm")
@@ -355,34 +393,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         e.preventDefault();
 
+
         const fd =
           new FormData(e.target);
+
 
         const form =
           Object.fromEntries(
             fd.entries()
           );
 
-        const divisionValue =
-          String(
-            form.division || ""
-          ).trim();
 
-
-        if (
-          !divisionValue
-            .toLowerCase()
-            .includes("second") &&
-          !divisionValue
-            .toLowerCase()
-            .includes("2nd")
-        ) {
-
-          return alert(
-            "ZAVONAM registration is only for Second Year BCA students."
-          );
-
-        }
+        /* -----------------------------------------------------
+           NO SECOND YEAR CHECK HERE
+           ----------------------------------------------------- */
 
 
         const data = {
@@ -395,28 +419,36 @@ document.addEventListener("DOMContentLoaded", () => {
               .toUpperCase(),
 
           name:
-            String(form.name || "")
-              .trim(),
+            String(
+              form.name || ""
+            ).trim(),
 
           student_id:
-            String(form.studentId || "")
-              .trim(),
+            String(
+              form.studentId || ""
+            ).trim(),
 
           mobile:
-            String(form.mobile || "")
-              .replace(/\D/g, ""),
+            String(
+              form.mobile || ""
+            )
+            .replace(/\D/g, ""),
 
           whatsapp:
-            String(form.whatsapp || "")
-              .replace(/\D/g, ""),
+            String(
+              form.whatsapp || ""
+            )
+            .replace(/\D/g, ""),
 
           email:
-            String(form.email || "")
-              .trim(),
+            String(
+              form.email || ""
+            ).trim(),
 
           division:
-            String(form.division || "")
-              .trim(),
+            String(
+              form.division || ""
+            ).trim(),
 
           payment_method:
             form.payment === "UPI"
@@ -435,12 +467,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
           amount: 600,
 
-          payment_status: "pending",
+          payment_status:
+            "pending",
 
-          pass_enabled: false
+          pass_enabled:
+            false
 
         };
 
+
+        /* -----------------------------------------------------
+           MOBILE VALIDATION
+        ----------------------------------------------------- */
 
         if (
           !data.mobile ||
@@ -453,6 +491,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
+
+        /* -----------------------------------------------------
+           SAVE TO SUPABASE
+        ----------------------------------------------------- */
 
         const {
           data: created,
@@ -467,7 +509,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (error) {
 
-          console.error(error);
+          console.error(
+            "Registration error:",
+            error
+          );
 
           return alert(
             "Registration could not be saved to the ZAVONAM database. Please check your internet connection and try again."
@@ -476,21 +521,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+        /* -----------------------------------------------------
+           REGISTRATION SUCCESS
+        ----------------------------------------------------- */
+
         data.id =
           created.registration_id;
+
 
         data.status =
           "Payment Pending";
 
+
         data.passEnabled =
           false;
+
 
         data.createdAt =
           new Date().toISOString();
 
+
         lastRegistration =
           data;
 
+
+        /* -----------------------------------------------------
+           LOCAL BACKUP
+        ----------------------------------------------------- */
 
         const list =
           JSON.parse(
@@ -499,7 +556,9 @@ document.addEventListener("DOMContentLoaded", () => {
             ) || "[]"
           );
 
+
         list.push(data);
+
 
         localStorage.setItem(
           "zavonam-registrations",
@@ -507,17 +566,32 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        $("#successMessage").textContent =
-          `Your registration ${data.id} has been received. Your ${data.payment_method} payment of ₹600 is waiting for organizer verification.`;
+        /* -----------------------------------------------------
+           SUCCESS MESSAGE
+        ----------------------------------------------------- */
+
+        if ($("#successMessage")) {
+
+          $("#successMessage").textContent =
+            `Your registration ${data.id} has been received. Your ${data.payment_method} payment of ₹600 is waiting for organizer verification.`;
+
+        }
+
 
         $("#successModal")
           ?.classList.add("show");
 
 
+        /* -----------------------------------------------------
+           RESET FORM
+        ----------------------------------------------------- */
+
         e.target.reset();
+
 
         $("#upiBox")
           ?.classList.add("hidden");
+
 
         $("#cashBox")
           ?.classList.add("hidden");
@@ -526,21 +600,31 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
+  /* =========================================================
+     REGISTRATION SUCCESS MODAL
+  ========================================================= */
+
   $("#closeModal")
     ?.addEventListener(
       "click",
-      () =>
+      () => {
+
         $("#successModal")
-          ?.classList.remove("show")
+          ?.classList.remove("show");
+
+      }
     );
 
 
   $("#closeSuccess")
     ?.addEventListener(
       "click",
-      () =>
+      () => {
+
         $("#successModal")
-          ?.classList.remove("show")
+          ?.classList.remove("show");
+
+      }
     );
 
 
@@ -578,6 +662,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const studentId =
           $("#lookupStudentId")
             .value.trim();
+
 
         const whatsapp =
           $("#lookupWhatsapp")
@@ -631,7 +716,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (error) {
 
-          console.error(error);
+          console.error(
+            "Pass lookup error:",
+            error
+          );
+
 
           box.innerHTML = `
 
@@ -667,6 +756,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+        /* -----------------------------------------------------
+           PAYMENT / PASS APPROVAL CHECK
+        ----------------------------------------------------- */
+
         if (
           found.payment_status !==
             "paid" ||
@@ -695,6 +788,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+        /* -----------------------------------------------------
+           NORMALIZE PASS DATA
+        ----------------------------------------------------- */
+
         const normalized = {
 
           id:
@@ -721,9 +818,11 @@ document.addEventListener("DOMContentLoaded", () => {
           payment:
             found.payment_method,
 
-          status: "Paid",
+          status:
+            "Paid",
 
-          passEnabled: true,
+          passEnabled:
+            true,
 
           approvedAt:
             found.approved_at,
@@ -734,9 +833,15 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
 
+        /* -----------------------------------------------------
+           APPROVED PASS UI
+        ----------------------------------------------------- */
+
         box.innerHTML = `
 
-          <div class="approved-pass-card">
+          <div
+            class="approved-pass-card"
+          >
 
             <div>
 
@@ -773,21 +878,27 @@ document.addEventListener("DOMContentLoaded", () => {
             ></div>
 
 
-            <div class="pass-code">
+            <div
+              class="pass-code"
+            >
               ${escapeHtml(
                 normalized.id
               )}
             </div>
 
 
-            <div class="approved-actions">
+            <div
+              class="approved-actions"
+            >
 
               <button
                 class="btn btn-primary"
                 id="downloadApprovedPdf"
+                type="button"
               >
                 Download Pass + Bill PDF
               </button>
+
 
               <a
                 class="btn btn-outline"
@@ -797,6 +908,7 @@ document.addEventListener("DOMContentLoaded", () => {
               >
                 WhatsApp
               </a>
+
 
               <button
                 class="btn btn-outline"
@@ -812,6 +924,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         `;
 
+
+        /* -----------------------------------------------------
+           QR CODE
+        ----------------------------------------------------- */
 
         if (window.QRCode) {
 
@@ -838,9 +954,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 }),
 
-              width: 180,
+              width:
+                180,
 
-              height: 180,
+              height:
+                180,
 
               colorDark:
                 "#173b2a",
@@ -857,6 +975,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+        /* -----------------------------------------------------
+           WHATSAPP
+        ----------------------------------------------------- */
+
         $("#approvedWhatsApp").href =
           `https://wa.me/91${String(
             normalized.whatsapp
@@ -865,6 +987,10 @@ document.addEventListener("DOMContentLoaded", () => {
 Hi ${normalized.name}, your payment has been approved. Your Entry Pass is now available on the ZAVONAM website. Registration ID: ${normalized.id}`
           )}`;
 
+
+        /* -----------------------------------------------------
+           COPY WHATSAPP MESSAGE
+        ----------------------------------------------------- */
 
         $("#copyApprovedMessage")
           ?.addEventListener(
@@ -878,14 +1004,18 @@ Registration ID: ${normalized.id}
 Your approved Entry Pass is now available on the ZAVONAM website.
 Please download the Pass + Bill PDF and keep it ready for entry.`;
 
+
               try {
 
-                await navigator.clipboard
+                await navigator
+                  .clipboard
                   .writeText(msg);
+
 
                 alert(
                   "WhatsApp message copied."
                 );
+
 
               } catch (err) {
 
@@ -899,6 +1029,10 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
             }
           );
 
+
+        /* -----------------------------------------------------
+           PDF BUTTON
+        ----------------------------------------------------- */
 
         $("#downloadApprovedPdf")
           .onclick = () =>
@@ -914,7 +1048,9 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
      APPROVED PASS PDF
   ========================================================= */
 
-  function generateApprovedPdf(pass) {
+  function generateApprovedPdf(
+    pass
+  ) {
 
     if (
       !window.jspdf?.jsPDF
@@ -960,7 +1096,9 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       [103, 106, 101];
 
 
-    /* PAGE 1 — ENTRY PASS */
+    /* =======================================================
+       PAGE 1 — ENTRY PASS
+    ======================================================= */
 
     doc.setFillColor(
       ...cream
@@ -1039,7 +1177,9 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       ...gold
     );
 
-    doc.setLineWidth(.5);
+    doc.setLineWidth(
+      .5
+    );
 
     doc.line(
       15,
@@ -1089,11 +1229,13 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
 
     doc.setFontSize(11);
 
+
     doc.text(
       `Student ID: ${pass.studentId || "-"}`,
       15,
       91
     );
+
 
     doc.text(
       `Division: ${pass.division || "-"}`,
@@ -1101,11 +1243,13 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       99
     );
 
+
     doc.text(
       `Registration ID: ${pass.id || "-"}`,
       15,
       107
     );
+
 
     doc.text(
       "Payment: APPROVED  •  ₹600",
@@ -1113,6 +1257,10 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       115
     );
 
+
+    /* =======================================================
+       QR CODE
+    ======================================================= */
 
     const qrCanvas =
       document.querySelector(
@@ -1127,11 +1275,13 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
           "image/png"
         );
 
+
       doc.setFillColor(
         255,
         255,
         255
       );
+
 
       doc.roundedRect(
         130,
@@ -1142,6 +1292,7 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
         4,
         "F"
       );
+
 
       doc.addImage(
         data,
@@ -1155,9 +1306,14 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
     }
 
 
+    /* =======================================================
+       ENTRY INSTRUCTIONS
+    ======================================================= */
+
     doc.setDrawColor(
       ...gold
     );
+
 
     doc.roundedRect(
       15,
@@ -1174,12 +1330,15 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       ...dark
     );
 
+
     doc.setFontSize(10);
+
 
     doc.setFont(
       "helvetica",
       "bold"
     );
+
 
     doc.text(
       "ENTRY INSTRUCTIONS",
@@ -1193,11 +1352,14 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       "normal"
     );
 
+
     doc.setFontSize(9);
+
 
     doc.setTextColor(
       ...muted
     );
+
 
     doc.text(
       "• Present this approved pass at the event entry.",
@@ -1205,11 +1367,13 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       155
     );
 
+
     doc.text(
       "• QR code is valid only after organizer approval.",
       23,
       164
     );
+
 
     doc.text(
       "• Keep this PDF available on your phone.",
@@ -1218,9 +1382,14 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
     );
 
 
+    /* =======================================================
+       FOOTER
+    ======================================================= */
+
     doc.setFillColor(
       ...green
     );
+
 
     doc.rect(
       0,
@@ -1237,7 +1406,9 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       255
     );
 
+
     doc.setFontSize(9);
+
 
     doc.text(
       "23 AUGUST 2026  •  ZAVONAM  •  SRINIVAS UNIVERSITY",
@@ -1246,7 +1417,9 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
     );
 
 
-    /* PAGE 2 — PAYMENT RECEIPT */
+    /* =======================================================
+       PAGE 2 — PAYMENT RECEIPT
+    ======================================================= */
 
     doc.addPage();
 
@@ -1254,6 +1427,7 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
     doc.setFillColor(
       ...cream
     );
+
 
     doc.rect(
       0,
@@ -1267,6 +1441,7 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
     doc.setFillColor(
       ...green
     );
+
 
     doc.rect(
       0,
@@ -1283,12 +1458,15 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       255
     );
 
+
     doc.setFont(
       "helvetica",
       "bold"
     );
 
+
     doc.setFontSize(10);
+
 
     doc.text(
       "ZAVONAM 2026  •  PAYMENT RECEIPT",
@@ -1301,7 +1479,9 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       ...dark
     );
 
+
     doc.setFontSize(24);
+
 
     doc.text(
       "Payment Bill",
@@ -1315,11 +1495,14 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       "normal"
     );
 
+
     doc.setFontSize(10);
+
 
     doc.setTextColor(
       ...muted
     );
+
 
     doc.text(
       `Generated: ${new Date().toLocaleString("en-IN")}`,
@@ -1332,6 +1515,7 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       ...gold
     );
 
+
     doc.line(
       15,
       58,
@@ -1339,6 +1523,10 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       58
     );
 
+
+    /* =======================================================
+       PAYMENT TABLE
+    ======================================================= */
 
     const rows = [
 
@@ -1400,7 +1588,9 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
           ...muted
         );
 
+
         doc.setFontSize(9);
+
 
         doc.text(
           label,
@@ -1413,12 +1603,15 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
           ...dark
         );
 
+
         doc.setFont(
           "helvetica",
           "bold"
         );
 
+
         doc.setFontSize(10);
+
 
         doc.text(
           String(value).slice(
@@ -1435,11 +1628,13 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
           "normal"
         );
 
+
         doc.setDrawColor(
           225,
           220,
           207
         );
+
 
         doc.line(
           15,
@@ -1455,9 +1650,14 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
     );
 
 
+    /* =======================================================
+       TOTAL
+    ======================================================= */
+
     doc.setFillColor(
       ...green
     );
+
 
     doc.roundedRect(
       15,
@@ -1476,18 +1676,22 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       255
     );
 
+
     doc.setFont(
       "helvetica",
       "bold"
     );
 
+
     doc.setFontSize(14);
+
 
     doc.text(
       "TOTAL PAID",
       23,
       y + 25
     );
+
 
     doc.text(
       "₹600",
@@ -1500,18 +1704,22 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       ...muted
     );
 
+
     doc.setFont(
       "helvetica",
       "normal"
     );
 
+
     doc.setFontSize(9);
+
 
     doc.text(
       "This bill is generated for the approved ZAVONAM 2026 event registration.",
       15,
       185
     );
+
 
     doc.text(
       "For verification, quote the Registration ID to the event organizers.",
@@ -1520,9 +1728,14 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
     );
 
 
+    /* =======================================================
+       FOOTER
+    ======================================================= */
+
     doc.setFillColor(
       ...green
     );
+
 
     doc.rect(
       0,
@@ -1539,7 +1752,9 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       255
     );
 
+
     doc.setFontSize(9);
+
 
     doc.text(
       "@zevix.bca  •  Second Year BCA  •  Srinivas University",
@@ -1547,6 +1762,10 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       289
     );
 
+
+    /* =======================================================
+       SAVE PDF
+    ======================================================= */
 
     doc.save(
       `ZAVONAM-2026-${String(
@@ -1572,11 +1791,20 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       /[&<>"']/g,
       c => ({
 
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
+        "&":
+          "&amp;",
+
+        "<":
+          "&lt;",
+
+        ">":
+          "&gt;",
+
+        '"':
+          "&quot;",
+
+        "'":
+          "&#39;"
 
       }[c])
     );
@@ -1604,6 +1832,7 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
                   "visible"
                 );
 
+
                 io.unobserve(
                   x.target
                 );
@@ -1626,6 +1855,7 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
 
   }
 
+
   observeReveals();
 
 
@@ -1639,6 +1869,7 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
       document.getElementById(
         "announcementText"
       );
+
 
     const section =
       document.getElementById(
@@ -1683,6 +1914,7 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
 
         box.textContent =
           data[0].message;
+
 
         return;
 
@@ -1775,6 +2007,7 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
           error
         );
 
+
         return;
 
       }
@@ -1854,7 +2087,6 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
           `
         ).join("");
 
-
     } catch (err) {
 
       console.error(
@@ -1891,6 +2123,7 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
         alert(
           "Image not available."
         );
+
 
         return;
 
@@ -1961,6 +2194,7 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
 
           overlay.remove();
 
+
           document.body.style.overflow =
             "";
 
@@ -1974,6 +2208,7 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
         ) {
 
           overlay.remove();
+
 
           document.body.style.overflow =
             "";
@@ -2006,6 +2241,7 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
         alert(
           "Image not available."
         );
+
 
         return;
 
@@ -2057,7 +2293,9 @@ Please download the Pass + Bill PDF and keep it ready for entry.`;
           );
 
 
-        a.href = url;
+        a.href =
+          url;
+
 
         a.download =
           filename;
