@@ -510,13 +510,19 @@ document.addEventListener("DOMContentLoaded", () => {
         if (error) {
 
           console.error(
-            "Registration error:",
+            "REGISTRATION ERROR:",
             error
           );
 
-          return alert(
-            "Registration could not be saved to the ZAVONAM database. Please check your internet connection and try again."
+          alert(
+            "SUPABASE ERROR\\n\\n" +
+            "Message: " + (error?.message || "Unknown error") +
+            "\\n\\nCode: " + (error?.code || "N/A") +
+            "\\n\\nDetails: " + (error?.details || "N/A") +
+            "\\n\\nHint: " + (error?.hint || "N/A")
           );
+
+          return;
 
         }
 
